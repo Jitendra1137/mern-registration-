@@ -21,15 +21,11 @@ jobs:
 
       # ✅ Backend
       - name: Build & Push Backend Image
-        run: |
-          docker build -t jitendrajat/my-backend:latest ./backend
-          docker push jitendrajat/my-backend:latest
+        run: docker build -t jitendrajat/my-backend:latest ./backend && docker push jitendrajat/my-backend:latest
 
-      # ✅ Frontend (FIXED ✅)
+      # ✅ Frontend (FINAL FIX ✅)
       - name: Build & Push Frontend Image
-        run: |
-          docker build --build-arg VITE_API_URL=${{ secrets.VITE_API_URL }} -t jitendrajat/my-frontend:latest ./frontend
-          docker push jitendrajat/my-frontend:latest
+        run: docker build --build-arg VITE_API_URL=${{ secrets.VITE_API_URL }} -t jitendrajat/my-frontend:latest ./frontend && docker push jitendrajat/my-frontend:latest
 
       # ✅ Deploy
       - name: Deploy on EC2
