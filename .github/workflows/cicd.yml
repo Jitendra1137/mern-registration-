@@ -23,7 +23,7 @@ jobs:
         run: docker build -t jitendrajat/my-backend:latest ./backend && docker push jitendrajat/my-backend:latest
 
       - name: Build & Push Frontend Image
-        run: docker build -t jitendrajat/my-frontend:latest --build-arg VITE_API_URL=${{ secrets.VITE_API_URL }} ./frontend && docker push jitendrajat/my-frontend:latest
+        run: docker build -t jitendrajat/my-frontend:latest ./frontend && docker push jitendrajat/my-frontend:latest
 
       - name: Deploy on EC2
         uses: appleboy/ssh-action@v1.0.0
