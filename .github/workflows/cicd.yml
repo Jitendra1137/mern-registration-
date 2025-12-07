@@ -10,33 +10,28 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # ✅ 1. GitHub repo ka code uthao
       - name: Checkout Code
         uses: actions/checkout@v3
 
-      # ✅ 2. DockerHub login
       - name: Login to DockerHub
         uses: docker/login-action@v2
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      # ✅ 3. Backend Image Build & Push
+      # ✅ Backend
       - name: Build & Push Backend Image
         run: |
           docker build -t jitendrajat/my-backend:latest ./backend
           docker push jitendrajat/my-backend:latest
 
-      # ✅ 4. Frontend Image Build & Push (VITE_API_URL from GitHub Secret)
+      # ✅ Frontend (FIXED ✅)
       - name: Build & Push Frontend Image
         run: |
-          docker build \
-            --build-arg VITE_API_URL=${{ secrets.VITE_API_URL }} \
-            -t jitendrajat/my-frontend:latest \
-            ./frontend
+          docker build --build-arg VITE_API_URL=${{ secrets.VITE_API_URL }} -t jitendrajat/my-frontend:latest ./frontend
           docker push jitendrajat/my-frontend:latest
 
-      # ✅ 5. Deploy on EC2 using docker-compose
+      # ✅ Deploy
       - name: Deploy on EC2
         uses: appleboy/ssh-action@v1.0.0
         with:
