@@ -10,24 +10,30 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # 1️⃣ Checkout code
       - name: Checkout Code
         uses: actions/checkout@v3
 
+      # 2️⃣ Login to DockerHub
       - name: Login to DockerHub
         uses: docker/login-action@v2
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      # ✅ Backend
+      # 3️⃣ Build & Push Backend Image ✅
       - name: Build & Push Backend Image
-        run: docker build -t jitendrajat/my-backend:latest ./backend && docker push jitendrajat/my-backend:latest
+        run: |
+          docker build -t jitendrajat/my-backend:latest ./backend
+          docker push jitendrajat/my-backend:latest
 
-      # ✅ Frontend (FINAL FIX ✅)
+      # 4️⃣ ✅ Build & Push Frontend Image (ERROR FREE FIX)
       - name: Build & Push Frontend Image
-        run: docker build --build-arg VITE_API_URL=${{ secrets.VITE_API_URL }} -t jitendrajat/my-frontend:latest ./frontend && docker push jitendrajat/my-frontend:latest
+        run: |
+          docker build --build-arg VITE_API_URL=${{ secrets.VITE_API_URL }} -t jitendrajat/my-frontend:latest ./frontend
+          docker push jitendrajat/my-frontend:latest
 
-      # ✅ Deploy
+      # 5️⃣ ✅ Deploy on EC2 using docker-compose
       - name: Deploy on EC2
         uses: appleboy/ssh-action@v1.0.0
         with:
